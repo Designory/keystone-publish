@@ -1,5 +1,5 @@
 {
-  "name": "keystone-publishable",
+  "name": "keystone-publish",
   "version": "0.0.1",
   "description": "A KeystoneJS plugin that enables a publishing flow between staging and production within the same application.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Designory/keystone-publishable.git"
+    "url": "git+https://github.com/Designory/keystone-publish.git"
   },
   "keywords": [
     "KeystoneJS",
@@ -19,9 +19,9 @@
   "author": "Kevin Middlesworth",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Designory/keystone-publishable/issues"
+    "url": "https://github.com/Designory/keystone-publish/issues"
   },
-  "homepage": "https://github.com/Designory/keystone-publishable#readme",
+  "homepage": "https://github.com/Designory/keystone-publish#readme",
   "dependencies": {
     "async": "^2.5.0",
     "deep-equal": "^1.0.1",
