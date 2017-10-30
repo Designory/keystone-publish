@@ -17,3 +17,26 @@ Keystone-publish does not in any way alter the Keystone source code. Instead it 
 
 
 ## Customization
+
+### Relating to Non-publishable Models
+
+`nonPublishable: true`
+
+Example 1: keep whole collection from taking a staging collection:
+```
+let modelConfig = {
+	listName: 'Form',
+	category: 'globals',
+	nonPublishable: true,
+	initialConfig: {...},
+	fieldConfig:[...]
+```
+
+Example 2: keep relationship field from taking staging collection:
+```
+interestAreas:{
+	type: Types.Relationship, 
+	ref: 'Thing',
+	nonPublishable: true
+}
+```

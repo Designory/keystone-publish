@@ -6,33 +6,28 @@ let publishLists = require('./lib/PublishAddLists.js'),
 
 require('dotenv').config();	
 
-
 class PublishHandler {
 	
 	constructor() {
 		this.config = {};
 		this.config.stgPrefix = 'Stg';
 		this.publishAbleList = [];
-		this.keystone = null;
+		this.uiNav = {};
 	}
 	
 	init(settings) {
-		// bring in Keystone in case it is not brought in on init.
 		// It is best to always initialize with the project instance of keystone, though,
 		// to avoid versioning conflicts
 		if (!settings.keystone) {
-			settings.keystone = require('keystone');
-			console.log("Warning: 'keystone-publishable' is using its own instance of keystone. Please initialize with the current project's instance.")
+			return console.log("Error: 'keystone-publishable' Needs to be initialized with the project's keystone instance.")
 		} 
 		
-		console.log("Init", settings)
-
 		// establish project settings
 		this.config = Object.assign({}, this.config, settings);
 	}
 
 	// uses `arguments` in addition to `model` to account for any middleware that is passed through
-	add(model){
+	register(model){
 
 		if (!model.listName) return console.error('Error: "listName" must exist in the object.');
 
@@ -40,8 +35,10 @@ class PublishHandler {
 
 		let Lists = publishLists.setup(model, this.config);
 
+		this.addToUiNav(Lists.StageList || Lists.ProdList);
+
 		if (arguments.length === 1) {
-			this.register(Lists.StageList, Lists.ProdList);
+			this.registerLists(Lists.StageList, Lists.ProdList);
 			return;
 		}
 
@@ -53,12 +50,12 @@ class PublishHandler {
 	registerLists(StageList, ProdList) {
 
 		// make sure the added publishing fields are displayed last
-		publishLists.initPublishFields(StageList, this.config);
-			
+		if (StageList) publishLists.initPublishFields(StageList, this.config);
+				
 		// add publishing hooks
-		publishHooks(StageList, this.config);
+		if (StageList) publishHooks(StageList, this.config, this.config.keystone);
 
-		StageList.register()
+		if (StageList) StageList.register();
 		ProdList.register();
 
 	}
@@ -74,6 +71,23 @@ class PublishHandler {
          	else this.registerLists(StageList, ProdList)
       	}.bind(this));
 
+	}
+
+	addToUiNav(List){
+		
+		if (!this.uiNav[List.category]) {
+			this.uiNav[List.category] = [List.path]
+		} else {
+			this.uiNav[List.category].push(List.path)
+		} 	
+	
+	}
+
+	getUiNav(category){
+		if (category) {
+			return this.uiNav[category];
+		} 
+		else return this.uiNav;
 	}
 
 	get lists(){
@@ -96,8 +110,6 @@ class PublishHandler {
 	getKeystone(){
 		return this.keystone;
 	}
-
-
 
 }
 
