@@ -11,7 +11,8 @@ class PublishHandler {
 	constructor() {
 		this.config = {};
 		this.config.stgPrefix = 'Stg';
-		this.publishAbleList = [];
+		this.allLists = [];
+		this.nonPublishables = [];
 		this.uiNav = {};
 	}
 	
@@ -31,7 +32,9 @@ class PublishHandler {
 
 		if (!model.listName) return console.error('Error: "listName" must exist in the object.');
 
-		this.publishAbleList.push(model.listName);
+		this.allLists.push(model.listName);
+
+		if (model.nonPublishable) this.nonPublishables.push(model.listName);
 
 		let Lists = publishLists.setup(model, this.config);
 
@@ -91,7 +94,7 @@ class PublishHandler {
 	}
 
 	get lists(){
-		return this.publishAbleList;
+		return this.allLists;
 	} 
 
 	get stgPrefix(){
@@ -100,6 +103,7 @@ class PublishHandler {
 
 	getList(list){
 		if (process.env.NODE_ENV === 'production') return list;
+		else if (this.nonPublishables.indexOf(list) != -1) return list;
 		else return this.config.stgPrefix + list;
 	}
 
