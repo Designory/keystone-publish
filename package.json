@@ -1,6 +1,6 @@
 {
   "name": "keystone-publish",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A KeystoneJS plugin that enables a publishing flow between staging and production within the same application.",
   "main": "index.js",
   "scripts": {

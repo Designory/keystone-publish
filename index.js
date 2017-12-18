@@ -58,6 +58,10 @@ class PublishHandler {
 		// add publishing hooks
 		if (StageList) publishHooks(StageList, this.config, this.config.keystone);
 
+		if (this.config.preRegisterHooks) {
+			this.config.preRegisterHooks(StageList, ProdList);
+		}
+
 		if (StageList) StageList.register();
 		ProdList.register();
 
