@@ -11,6 +11,8 @@ class PublishHandler {
 	constructor() {
 		this.config = {};
 		this.config.stgPrefix = 'Stg';
+		this.config.languages = [];
+		this.config.prodPreviewParam = null;
 		this.allLists = [];
 		this.nonPublishables = [];
 		this.uiNav = {};
@@ -105,10 +107,49 @@ class PublishHandler {
 		return this.config.stgPrefix;
 	}
 
-	getList(list){
-		if (process.env.NODE_ENV === 'production') return list;
-		else if (this.nonPublishables.indexOf(list) != -1) return list;
-		else return this.config.stgPrefix + list;
+	getList(list, req){
+		
+		let returnStr = '';
+
+		// first we need to determine whether we are in prod editing (or prod-based preview) mode
+		// the default is to assume a seperate editing environment
+		if (!this.config.prodPreviewParam) {
+			// if we are in the production environment, we return the production list
+			if (process.env.NODE_ENV === 'production') returnStr = list;
+			else if (this.nonPublishables.indexOf(list) != -1) returnStr = list;
+			else returnStr = this.config.stgPrefix + list;
+
+		} else {
+
+			if (!req) {
+				console.log("Error: When operating in prod preview mode, the 'getList' method need to recieve the req object: 'getList([listname], req)'");
+				req = {};
+			}
+
+			// if we are in the production environment, we return the production list
+			if (this.nonPublishables.indexOf(list) != -1 || req.params[this.config.prodPreviewParam] === 'true') returnStr = this.config.stgPrefix + list;
+			else returnStr = list;
+		}
+
+
+		// we need to account for the particular language that us being requested
+		if (this.config.languages.length) {
+			// add language prefix to the list name
+			/* 
+			
+			this.config.languages.filter 
+
+			*/
+		}
+
+		return returnStr;
+
+	}
+
+	getLanguage(req){
+		return this.config.languages.filter(function(item){
+			return item === req.path;
+		})[0] || 'en';
 	}
 
 	getConfig(){
