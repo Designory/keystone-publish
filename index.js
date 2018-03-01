@@ -16,6 +16,7 @@ class PublishHandler {
 		this.allLists = [];
 		this.nonPublishables = [];
 		this.uiNav = {};
+		this.parentChild = [];
 	}
 	
 	init(settings) {
@@ -31,6 +32,8 @@ class PublishHandler {
 
 	// uses `arguments` in addition to `model` to account for any middleware that is passed through
 	register(model){
+
+		let self = this;
 
 		if (!model.listName) return console.error('Error: "listName" must exist in the object.');
 
