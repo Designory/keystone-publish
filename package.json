@@ -27,6 +27,7 @@
     "deep-equal": "^1.0.1",
     "dotenv": "^4.0.0",
     "traverse": "^0.6.6",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "lodash": ">=4.17.11"
   }
 }
