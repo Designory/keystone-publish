@@ -124,13 +124,13 @@ class PublishHandler {
 
 		} else {
 
-			if (!req) {
-				console.log("Error: When operating in prod preview mode, the 'getList' method need to recieve the req object: 'getList([listname], req)'");
-				req = {};
-			}
+			// if (!req) {
+			// 	console.log("Error: When operating in prod preview mode, the 'getList' method need to recieve the req object: 'getList([listname], req)'");
+			// 	req = {};
+			// }
 
 			// if we are in the production environment, we return the production list
-			if (this.nonPublishables.indexOf(list) != -1 || req.params[this.config.prodPreviewParam] === 'true') returnStr = this.config.stgPrefix + list;
+			if (this.nonPublishables.indexOf(list) != -1 || req && req.params[this.config.prodPreviewParam] === 'true') returnStr = this.config.stgPrefix + list;
 			else returnStr = list;
 		}
 
