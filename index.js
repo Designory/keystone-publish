@@ -130,7 +130,7 @@ class PublishHandler {
 			// }
 
 			// if we are in the production environment, we return the production list
-			if (this.nonPublishables.indexOf(list) != -1 || req && req.params[this.config.prodPreviewParam] === 'true') returnStr = this.config.stgPrefix + list;
+			if (this.nonPublishables.indexOf(list) != -1 || req && req.query && req.query[this.config.prodPreviewParam] === 'true') returnStr = this.config.stgPrefix + list;
 			else returnStr = list;
 		}
 
